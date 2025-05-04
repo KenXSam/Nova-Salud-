@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventas - Nova Salud</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 48px 0 0;
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+            background-color: #343a40;
+        }
+        .sidebar-sticky {
+            position: relative;
+            top: 0;
+            height: calc(100vh - 48px);
+            padding-top: .5rem;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        .nav-link {
+            font-weight: 500;
+            color: #ced4da;
+            padding: 10px 20px;
+            margin: 5px 15px;
+            border-radius: 5px;
+        }
+        .nav-link:hover {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .nav-link.active {
+            color: #fff;
+            background-color: #0d6efd;
+        }
+        .navbar-brand {
+            padding-top: .75rem;
+            padding-bottom: .75rem;
+            font-size: 1.1rem;
+            background-color: rgba(0, 0, 0, .25);
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+        }
+        .navbar .navbar-toggler {
+            top: .25rem;
+            right: 1rem;
+        }
+        .inventory-header {
+            margin-bottom: 1.5rem;
+        }
+        .table-responsive {
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .action-buttons .btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+        .badge-stock {
+            font-size: 0.8rem;
+            padding: 0.35em 0.65em;
+        }
+        .low-stock {
+            background-color: #f8d7da;
+            color: #842029;
+        }
+        .normal-stock {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+        .search-container {
+            margin-bottom: 1rem;
+        }
+        .modal-header {
+            background-color: #0d6efd;
+            color: white;
+        }
+        .form-label {
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Nova Salud</a>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="d-flex align-items-center">
+            <div class="dropdown">
+                <a href="#" class="text-white text-decoration-none dropdown-toggle me-2" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-user-circle me-1"></i> Admin
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> Perfil</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Configuración</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="index.html"><i class="fas fa-sign-out-alt me-2"></i> Cerrar sesión</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="dashboard.html">
+                                <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="inventario.html">
+                                <i class="fas fa-boxes me-2"></i> Inventario
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="ventas.html">
+                                <i class="fas fa-shopping-cart me-2"></i> Ventas
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="clientes.html">
+                                <i class="fas fa-users me-2"></i> Clientes
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="reportes.html">
+                                <i class="fas fa-chart-bar me-2"></i> Reportes
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="usuarios.html">
+                                <i class="fas fa-user-cog me-2"></i> Usuarios
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2"><i class="fas fa-boxes me-2"></i> Gestión de Ventas</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group me-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="exportCSV">
+                                <i class="fas fa-file-csv me-1"></i> CSV
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="exportPDF">
+                                <i class="fas fa-file-pdf me-1"></i> PDF
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="printInventory">
+                                <i class="fas fa-print me-1"></i> Imprimir
+                            </button>
+                        </div>
+                        <button class="btn btn-primary btn-nueva-venta" data-bs-toggle="modal" data-bs-target="#modalVenta">
+                            <i class="fas fa-plus me-1"></i> Nuevo Venta
+                        </button>
+                        
+                    </div>
+                </div>
+                <div class="container my-4">
+                
+                    <!-- Indicadores -->
+                    <div class="row mb-4">
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="fas fa-file-invoice-dollar me-2"></i>Ventas Hoy</h5>
+                                    <p class="card-text display-6" id="ventasHoy">S/ 1,230.00</p>
+                                    <p class="text-muted">Última actualización: hoy, 11:00 AM</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title text-success"><i class="fas fa-users me-2"></i>Clientes Atendidos</h5>
+                                    <p class="card-text display-6" id="clientesAtendidos">45</p>
+                                    <p class="text-muted">Clientes únicos hoy</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title text-info"><i class="fas fa-cash-register me-2"></i>Ventas Pendientes</h5>
+                                    <p class="card-text display-6" id="ventasPendientes">3</p>
+                                    <p class="text-muted">Facturas por cobrar</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- Tabla de Ventas -->
+                    <div class="table-responsive mb-4">
+                        <table class="table table-hover table-striped" id="salesTable">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>N° Factura</th>
+                                    <th>Cliente</th>
+                                    <th>Vendedor</th>
+                                    <th>Fecha</th>
+                                    <th>Total</th>
+                                    <th>Tipo de Pago</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-detalle='[{"producto":"Paracetamol 500mg","cantidad":10,"precio":"S/ 1.20","subtotal":"S/ 12.00"}]'>
+                                    <td>F0001</td>
+                                    <td>Juan Pérez</td>
+                                    <td>María López</td>
+                                    <td>03/05/2025</td>
+                                    <td>S/ 120.00</td>
+                                    <td>Efectivo</td>
+                                    <td><span class="badge bg-success">Pagado</span></td>
+                                    <td class="action-buttons">
+                                        <button class="btn btn-outline-info btn-sm btn-ver-detalle">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr data-detalle='[{"producto":"Ibuprofeno 400mg","cantidad":5,"precio":"S/ 2.00","subtotal":"S/ 10.00"},{"producto":"Vitamina C 1g","cantidad":3,"precio":"S/ 3.50","subtotal":"S/ 10.50"}]'>
+                                    <td>F0002</td>
+                                    <td>Empresa XYZ</td>
+                                    <td>Carlos Ruiz</td>
+                                    <td>02/05/2025</td>
+                                    <td>S/ 250.50</td>
+                                    <td>Tarjeta</td>
+                                    <td><span class="badge bg-warning">Pendiente</span></td>
+                                    <td class="action-buttons">
+                                        <button class="btn btn-outline-info btn-sm btn-ver-detalle">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <!-- Más filas aquí -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Modal Nueva Venta -->
+                <div class="modal fade" id="modalVenta" tabindex="-1" aria-labelledby="modalVentaLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalVentaLabel">Nueva Venta</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="formVenta">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="fecha" class="form-label">Fecha</label>
+                                            <input type="date" class="form-control" id="fecha" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="cliente" class="form-label">Cliente</label>
+                                            <input type="text" class="form-control" id="cliente" required>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="producto" class="form-label">Producto</label>
+                                            <input type="text" class="form-control" id="producto" required>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="cantidad" class="form-label">Cantidad</label>
+                                            <input type="number" class="form-control" id="cantidad" min="1" required>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="pago" class="form-label">Método de Pago</label>
+                                            <select id="pago" class="form-select">
+                                                <option value="Efectivo">Efectivo</option>
+                                                <option value="Tarjeta">Tarjeta</option>
+                                                <option value="Transferencia">Transferencia</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <button type="submit" class="btn btn-success">Registrar Venta</button>
+                                    </div>
+                                </form>
+                                <div id="mensajeExito" class="alert alert-success mt-3 d-none" role="alert">
+                                    ¡Venta registrada exitosamente!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Modal Detalle de Venta -->
+                <div class="modal fade" id="detalleVentaModal" tabindex="-1" aria-labelledby="detalleVentaModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="detalleVentaModalLabel">Detalle de Venta</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Producto</th>
+                                            <th>Cantidad</th>
+                                            <th>Precio Unitario</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="detalleVentaBody">
+                                        <!-- Detalle generado por JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>>
+
+<!-- Bootstrap JS y Script personalizado -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Mostrar detalle de venta
+    document.querySelectorAll('.btn-ver-detalle').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            let tr = btn.closest('tr');
+            let detalle = JSON.parse(tr.getAttribute('data-detalle'));
+            let tbody = document.getElementById('detalleVentaBody');
+            tbody.innerHTML = '';
+            detalle.forEach(function(item) {
+                let row = `<tr>
+                    <td>${item.producto}</td>
+                    <td>${item.cantidad}</td>
+                    <td>${item.precio}</td>
+                    <td>${item.subtotal}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+            let modal = new bootstrap.Modal(document.getElementById('detalleVentaModal'));
+            modal.show();
+        });
+    });
+
+    // Registrar venta desde el modal
+    const form = document.getElementById('formVenta');
+    const mensaje = document.getElementById('mensajeExito');
+    const modalVenta = document.getElementById('modalVenta');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        mensaje.classList.remove('d-none');
+        form.reset();
+        setTimeout(() => {
+            const modal = bootstrap.Modal.getInstance(modalVenta);
+            modal.hide();
+            mensaje.classList.add('d-none');
+        }, 1500);
+    });
+
+    // Ocultar mensaje si el modal se vuelve a abrir
+    modalVenta.addEventListener('show.bs.modal', function() {
+        mensaje.classList.add('d-none');
+    });
+});
+</script>
+</body>
+</html>

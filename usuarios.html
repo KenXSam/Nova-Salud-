@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios - Nova Salud</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 48px 0 0;
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+            background-color: #343a40;
+        }
+        .sidebar-sticky {
+            position: relative;
+            top: 0;
+            height: calc(100vh - 48px);
+            padding-top: .5rem;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        .nav-link {
+            font-weight: 500;
+            color: #ced4da;
+            padding: 10px 20px;
+            margin: 5px 15px;
+            border-radius: 5px;
+        }
+        .nav-link:hover {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .nav-link.active {
+            color: #fff;
+            background-color: #0d6efd;
+        }
+        .navbar-brand {
+            padding-top: .75rem;
+            padding-bottom: .75rem;
+            font-size: 1.1rem;
+            background-color: rgba(0, 0, 0, .25);
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+        }
+        .table-responsive {
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .action-buttons .btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+        .modal-header {
+            background-color: #0d6efd;
+            color: white;
+        }
+        .form-label {
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Nova Salud</a>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="d-flex align-items-center">
+            <div class="dropdown">
+                <a href="#" class="text-white text-decoration-none dropdown-toggle me-2" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-user-circle me-1"></i> Admin
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> Perfil</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Configuración</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="index.html"><i class="fas fa-sign-out-alt me-2"></i> Cerrar sesión</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="dashboard.html"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="inventario.html"><i class="fas fa-boxes me-2"></i> Inventario</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="ventas.html"><i class="fas fa-shopping-cart me-2"></i> Ventas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="clientes.html"><i class="fas fa-users me-2"></i> Clientes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="reportes.html"><i class="fas fa-chart-bar me-2"></i> Reportes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="usuarios.html"><i class="fas fa-user-cog me-2"></i> Usuarios</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2"><i class="fas fa-user-cog me-2"></i> Gestión de Usuarios</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group me-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="exportCSV">
+                                <i class="fas fa-file-csv me-1"></i> CSV
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="exportPDF">
+                                <i class="fas fa-file-pdf me-1"></i> PDF
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" id="printUsers">
+                                <i class="fas fa-print me-1"></i> Imprimir
+                            </button>
+                        </div>
+                        <button class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#modalUsuario" id="btnNuevoUsuario">
+                            <i class="fas fa-plus me-1"></i> Nuevo Usuario
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-2">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Buscar usuario..." id="searchUsuario">
+                        <button class="btn btn-outline-secondary" type="button" id="btnSearch">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="container my-4">
+                    <div class="table-responsive mb-4">
+                        <table class="table table-hover table-striped" id="usuariosTable">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Usuario</th>
+                                    <th>Rol</th>
+                                    <th>Correo</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Admin Principal</td>
+                                    <td>admin</td>
+                                    <td><span class="badge bg-primary">Administrador</span></td>
+                                    <td>admin@novasalud.com</td>
+                                    <td class="action-buttons">
+                                        <button class="btn btn-sm btn-warning btn-editar"><i class="fas fa-edit"></i></button>
+                                        <button class="btn btn-sm btn-danger btn-eliminar"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <!-- Más usuarios aquí -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal Usuario -->
+    <div class="modal fade" id="modalUsuario" tabindex="-1" aria-labelledby="modalUsuarioLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="formUsuario">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalUsuarioLabel">Nuevo Usuario</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="editIndex">
+                        <div class="mb-3">
+                            <label for="nombreUsuario" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombreUsuario" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="usuario" class="form-label">Usuario</label>
+                            <input type="text" class="form-control" id="usuario" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="rol" class="form-label">Rol</label>
+                            <select class="form-select" id="rol" required>
+                                <option value="Administrador">Administrador</option>
+                                <option value="Vendedor">Vendedor</option>
+                                <option value="Cajero">Cajero</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="correoUsuario" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="correoUsuario">
+                        </div>
+                        <div class="mb-3">
+                            <label for="claveUsuario" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="claveUsuario" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS y Script personalizado -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Manejo de usuarios en tabla
+        const usuariosTable = document.getElementById('usuariosTable').getElementsByTagName('tbody')[0];
+        const formUsuario = document.getElementById('formUsuario');
+        let editRow = null;
+
+        // Abrir modal para nuevo usuario
+        document.getElementById('btnNuevoUsuario').addEventListener('click', () => {
+            formUsuario.reset();
+            document.getElementById('modalUsuarioLabel').textContent = 'Nuevo Usuario';
+            document.getElementById('editIndex').value = '';
+            editRow = null;
+        });
+
+        // Agregar o editar usuario
+        formUsuario.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nombre = document.getElementById('nombreUsuario').value;
+            const usuario = document.getElementById('usuario').value;
+            const rol = document.getElementById('rol').value;
+            const correo = document.getElementById('correoUsuario').value;
+            // const clave = document.getElementById('claveUsuario').value; // No se muestra en la tabla
+
+            let rolBadge = '';
+            if (rol === 'Administrador') rolBadge = '<span class="badge bg-primary">Administrador</span>';
+            else if (rol === 'Vendedor') rolBadge = '<span class="badge bg-success">Vendedor</span>';
+            else if (rol === 'Cajero') rolBadge = '<span class="badge bg-warning text-dark">Cajero</span>';
+
+            if (editRow) {
+                // Editar
+                editRow.cells[0].textContent = nombre;
+                editRow.cells[1].textContent = usuario;
+                editRow.cells[2].innerHTML = rolBadge;
+                editRow.cells[3].textContent = correo;
+            } else {
+                // Agregar
+                const newRow = usuariosTable.insertRow();
+                newRow.innerHTML = `
+                    <td>${nombre}</td>
+                    <td>${usuario}</td>
+                    <td>${rolBadge}</td>
+                    <td>${correo}</td>
+                    <td class="action-buttons">
+                        <button class="btn btn-sm btn-warning btn-editar"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-sm btn-danger btn-eliminar"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+            }
+            // Cerrar modal
+            bootstrap.Modal.getInstance(document.getElementById('modalUsuario')).hide();
+        });
+
+        // Delegación de eventos para editar/eliminar
+        usuariosTable.addEventListener('click', function(e) {
+            if (e.target.closest('.btn-editar')) {
+                editRow = e.target.closest('tr');
+                document.getElementById('modalUsuarioLabel').textContent = 'Editar Usuario';
+                document.getElementById('nombreUsuario').value = editRow.cells[0].textContent;
+                document.getElementById('usuario').value = editRow.cells[1].textContent;
+                // Obtener el rol del badge
+                const rolBadge = editRow.cells[2].querySelector('.badge');
+                if (rolBadge) {
+                    if (rolBadge.classList.contains('bg-primary')) document.getElementById('rol').value = 'Administrador';
+                    else if (rolBadge.classList.contains('bg-success')) document.getElementById('rol').value = 'Vendedor';
+                    else if (rolBadge.classList.contains('bg-warning')) document.getElementById('rol').value = 'Cajero';
+                }
+                document.getElementById('correoUsuario').value = editRow.cells[3].textContent;
+                document.getElementById('claveUsuario').value = '';
+                new bootstrap.Modal(document.getElementById('modalUsuario')).show();
+            }
+            if (e.target.closest('.btn-eliminar')) {
+                if (confirm('¿Seguro que desea eliminar este usuario?')) {
+                    e.target.closest('tr').remove();
+                }
+            }
+        });
+
+        // Búsqueda de usuarios
+        document.getElementById('btnSearch').addEventListener('click', function() {
+            const filtro = document.getElementById('searchUsuario').value.toLowerCase();
+            Array.from(usuariosTable.rows).forEach(row => {
+                row.style.display = Array.from(row.cells).some(cell =>
+                    cell.textContent.toLowerCase().includes(filtro)
+                ) ? '' : 'none';
+            });
+        });
+
+        // Exportar e imprimir (simulado)
+        document.getElementById('exportCSV').onclick = () => alert("Funcionalidad de exportar a CSV próximamente.");
+        document.getElementById('exportPDF').onclick = () => alert("Funcionalidad de exportar a PDF próximamente.");
+        document.getElementById('printUsers').onclick = () => window.print();
+    </script>
+</body>
+</html>
